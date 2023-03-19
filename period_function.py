@@ -1,5 +1,6 @@
 import datetime
 from dateutil.relativedelta import relativedelta  # 需額外安裝 python-dateutil 函式庫
+from time import sleep
 
 oddList = [1, 3, 5, 7, 8, 10, 12]
 doubleList = [4, 6, 9, 11]
@@ -48,20 +49,19 @@ def TheLastDayOfMonth(Y, M):
 
 def TimeHasNotPassTheDestTime(now, Dest):
     '''判斷此刻時間是否已經超過目標時間。未超過便回傳True'''
-    if (now.hour < Dest.hour or (now.hour == Dest.hour and now.minute < Dest.minute) or (now.hour == Dest.hour and now.minute == Dest.minute and (now.second - Dest.second > 0))):
+    if (now.hour < Dest.hour or (now.hour == Dest.hour and now.minute < Dest.minute) or (now.hour == Dest.hour and now.minute == Dest.minute and (now.second < Dest.second))):
         return True
     else:
         return False
 
 
-def GetExactDate(frequency, fday, ftime):
+def GetExactDate(now: datetime, frequency, fday, ftime):
     '''取得本次deadline的確切時間'''
-    now = datetime.datetime.now()
     destTime = datetime.time(
         int(ftime.split(":")[0]), int(ftime.split(":")[1]), 0, 0)
     fday = int(fday)
 
-    if (frequency == "allDay"):  # 每天提醒的狀況
+    if (frequency == "everyDay"):  # 每天提醒的狀況
         if (TimeHasNotPassTheDestTime(now.time(), destTime)):
             now = now.replace(hour=int(ftime.split(":")[0]), minute=int(
                 ftime.split(":")[1]), second=0)

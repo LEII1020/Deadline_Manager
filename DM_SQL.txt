@@ -2,57 +2,59 @@ DROP database dm;
 CREATE database dm;
 use dm;
 
-create table `user`(
-`discordID` INT NOT NULL PRIMARY KEY,
-`name` varchar(20) not null
+create table user(
+discordID varchar(20) NOT NULL,
+name varchar(20) not null, 
+guild varchar(20) not null, 
+PRIMARY KEY(discordID, guild)
 );
 
-create table `periodDeadline`(
-`periodID` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-`frequency` varchar(10) not null,
-`day` int not null,
-`time` time not null
+create table periodDeadline(
+periodID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+frequency varchar(10) not null,
+day int not null,
+time time not null
 );
 
-create table `deadline`(
-`deadlineID` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-`periodID` int,
-`deadlineName` varchar(20) not null,
-`PN` varchar(1) not null,
-`datetime` datetime not null,
-`status` int default 0,
-`guild` INT not null, 
-`channel` INT not null,
+create table deadline(
+deadlineID int NOT NULL AUTO_INCREMENT PRIMARY KEY,
+periodID int,
+deadlineName varchar(20) not null,
+PN varchar(1) not null,
+datetime datetime not null,
+status int default 0,
+guild varchar(20) not null, 
+channel varchar(20) not null,
 FOREIGN KEY(periodID) REFERENCES periodDeadline(periodID) on delete set NULL
 );
 
-create table `userdeadline`(
-`deadlineID` int NOT NULL,
-`discordID` INT NOT NULL,
-`status` int default 0,
-`start_time` datetime NOT NULL,
-`end_time` datetime,
+create table userdeadline(
+deadlineID int NOT NULL,
+discordID varchar(20) NOT NULL,
+status int default 0,
+start_time datetime NOT NULL,
+end_time datetime,
 primary key (deadlineID, discordID),
 FOREIGN KEY(deadlineID) REFERENCES deadline(deadlineID) on delete cascade,
-FOREIGN KEY(discordID) REFERENCES user(discordID)
+FOREIGN KEY(discordID) REFERENCES user(discordID) on delete cascade
 );
 
-create table `toNotify`(
-`deadlineID` int NOT NULL,
-`Ndatetime` datetime not null,
-`num` int,
-primary key (deadlineID, last_one),
+create table toNotify(
+deadlineID int NOT NULL,
+Ndatetime datetime not null,
+num int,
+primary key (deadlineID, num),
 FOREIGN KEY(deadlineID) REFERENCEs deadline(deadlineID) on delete cascade
 );
 
-create table `suggestion`(
-`discordID` int NOT NULL,
-`suggesterID` int not null,
-`content` varchar(100),
-`score` int not null,
-`guild` int not null,
+create table suggestion(
+discordID varchar(20) not null,
+suggesterID varchar(20) not null,
+content varchar(100),
+score int not null,
+guild varchar(20) not null,
 primary key (discordID, suggesterID, guild),
-FOREIGN KEY(suggesterID) REFERENCEs user(discordID) on delete set null,
+FOREIGN KEY(suggesterID) REFERENCEs user(discordID) on delete cascade,
 FOREIGN KEY(discordID) REFERENCEs user(discordID) on delete cascade
 );
 
@@ -65,3 +67,4 @@ select * from deadline;
 select * from userdeadline;
 select * from periodDeadline;
 select * from toNotify;
+select * from suggestion;
