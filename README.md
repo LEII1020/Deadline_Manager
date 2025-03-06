@@ -25,10 +25,4 @@
 
 其他：datetime、matploblib、numpy、pandas、PIL、win32com
 
-## 🚶‍♀️🚶🚶‍♂️團隊成員
 
-初窺DiscordMySQL門徑的隊長
-隊伍流程推進的唯一之光
-深夜裡的程式救難隊隊長
-庖丁解牛般的謎因之神
-隊伍裡的六翼天使拉斐爾
